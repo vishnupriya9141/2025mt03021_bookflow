@@ -1,0 +1,473 @@
+[
+  {
+    "label": "Initial inventory",
+    "method": "GET",
+    "url": "http://127.0.0.1:54471/books",
+    "request": null,
+    "status": 200,
+    "response": [
+      {
+        "sku": "BOOK-001",
+        "title": "Designing Distributed Systems",
+        "available": 10
+      },
+      {
+        "sku": "BOOK-002",
+        "title": "Microservices in Practice",
+        "available": 5
+      }
+    ]
+  },
+  {
+    "label": "Create order",
+    "method": "POST",
+    "url": "http://127.0.0.1:54472/orders",
+    "request": {
+      "customer": "Vattikunta Vishnu Priya",
+      "sku": "BOOK-001",
+      "quantity": 2
+    },
+    "status": 201,
+    "response": {
+      "id": "bb8ae343-8047-44bf-954a-5ca79cfc4c29",
+      "idempotency_key": "demo-order-001",
+      "customer": "Vattikunta Vishnu Priya",
+      "sku": "BOOK-001",
+      "quantity": 2,
+      "status": "CONFIRMED",
+      "reason": null,
+      "created_at": "2026-10-24 11:13:59"
+    }
+  },
+  {
+    "label": "Read order",
+    "method": "GET",
+    "url": "http://127.0.0.1:54472/orders/bb8ae343-8047-44bf-954a-5ca79cfc4c29",
+    "request": null,
+    "status": 200,
+    "response": {
+      "id": "bb8ae343-8047-44bf-954a-5ca79cfc4c29",
+      "idempotency_key": "demo-order-001",
+      "customer": "Vattikunta Vishnu Priya",
+      "sku": "BOOK-001",
+      "quantity": 2,
+      "status": "CONFIRMED",
+      "reason": null,
+      "created_at": "2026-10-24 11:13:59"
+    }
+  },
+  {
+    "label": "Safe retry",
+    "method": "POST",
+    "url": "http://127.0.0.1:54472/orders",
+    "request": {
+      "customer": "Vattikunta Vishnu Priya",
+      "sku": "BOOK-001",
+      "quantity": 2
+    },
+    "status": 200,
+    "response": {
+      "id": "bb8ae343-8047-44bf-954a-5ca79cfc4c29",
+      "idempotency_key": "demo-order-001",
+      "customer": "Vattikunta Vishnu Priya",
+      "sku": "BOOK-001",
+      "quantity": 2,
+      "status": "CONFIRMED",
+      "reason": null,
+      "created_at": "2026-10-24 11:13:59"
+    }
+  },
+  {
+    "label": "Stock deducted once",
+    "method": "GET",
+    "url": "http://127.0.0.1:54471/books/BOOK-001",
+    "request": null,
+    "status": 200,
+    "response": {
+      "sku": "BOOK-001",
+      "title": "Designing Distributed Systems",
+      "available": 8
+    }
+  },
+  {
+    "label": "Key conflict",
+    "method": "POST",
+    "url": "http://127.0.0.1:54472/orders",
+    "request": {
+      "customer": "Vattikunta Vishnu Priya",
+      "sku": "BOOK-001",
+      "quantity": 3
+    },
+    "status": 409,
+    "response": {
+      "error": "Idempotency-Key already used for a different order"
+    }
+  },
+  {
+    "label": "Insufficient stock",
+    "method": "POST",
+    "url": "http://127.0.0.1:54472/orders",
+    "request": {
+      "customer": "Vattikunta Vishnu Priya",
+      "sku": "BOOK-001",
+      "quantity": 100
+    },
+    "status": 201,
+    "response": {
+      "id": "c9101253-d42d-4d23-ad0d-6a0469d80951",
+      "idempotency_key": "demo-reject",
+      "customer": "Vattikunta Vishnu Priya",
+      "sku": "BOOK-001",
+      "quantity": 100,
+      "status": "REJECTED",
+      "reason": "Insufficient stock",
+      "created_at": "2026-10-24 11:13:59"
+    }
+  },
+  {
+    "label": "Invalid quantity",
+    "method": "POST",
+    "url": "http://127.0.0.1:54472/orders",
+    "request": {
+      "customer": "Vattikunta Vishnu Priya",
+      "sku": "BOOK-001",
+      "quantity": true
+    },
+    "status": 400,
+    "response": {
+      "error": "quantity must be an integer between 1 and 1000"
+    }
+  },
+  {
+    "label": "Missing idempotency key",
+    "method": "POST",
+    "url": "http://127.0.0.1:54472/orders",
+    "request": {
+      "customer": "Vattikunta Vishnu Priya",
+      "sku": "BOOK-001",
+      "quantity": 2
+    },
+    "status": 400,
+    "response": {
+      "error": "Idempotency-Key must be a nonempty string of at most 120 characters"
+    }
+  },
+  {
+    "label": "Unauthorized reservation",
+    "method": "POST",
+    "url": "http://127.0.0.1:54471/reservations",
+    "request": {
+      "order_id": "intruder",
+      "sku": "BOOK-001",
+      "quantity": 1
+    },
+    "status": 401,
+    "response": {
+      "error": "Invalid service token"
+    }
+  },
+  {
+    "label": "Concurrency: zero stock, no overselling",
+    "method": "GET",
+    "url": "http://127.0.0.1:54471/books/BOOK-001",
+    "request": null,
+    "status": 200,
+    "response": {
+      "sku": "BOOK-001",
+      "title": "Designing Distributed Systems",
+      "available": 0
+    }
+  },
+  {
+    "label": "Concurrency summary",
+    "requests": 20,
+    "confirmed": 8,
+    "rejected": 12
+  },
+  {
+    "label": "Dependency outage",
+    "method": "POST",
+    "url": "http://127.0.0.1:54472/orders",
+    "request": {
+      "customer": "Vattikunta Vishnu Priya",
+      "sku": "BOOK-002",
+      "quantity": 1
+    },
+    "status": 503,
+    "response": {
+      "error": "Inventory outcome unknown; retry the same Idempotency-Key"
+    }
+  },
+  {
+    "label": "Pending order remains durable",
+    "method": "GET",
+    "url": "http://127.0.0.1:54472/orders",
+    "request": null,
+    "status": 200,
+    "response": [
+      {
+        "id": "199b0d24-44c5-4d1f-9256-fd550fe48a06",
+        "idempotency_key": "concurrent-12",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "REJECTED",
+        "reason": "Insufficient stock",
+        "created_at": "2026-10-24 11:13:59"
+      },
+      {
+        "id": "220aa330-ca65-4d1a-82c8-a6163464523d",
+        "idempotency_key": "outage-recovery",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-002",
+        "quantity": 1,
+        "status": "PENDING",
+        "reason": null,
+        "created_at": "2026-10-24 11:13:59"
+      },
+      {
+        "id": "23064b8a-b432-47df-8914-f629a7f09328",
+        "idempotency_key": "concurrent-2",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "REJECTED",
+        "reason": "Insufficient stock",
+        "created_at": "2026-10-24 11:13:59"
+      },
+      {
+        "id": "2579eff3-dfe9-412c-afa3-6365efe47027",
+        "idempotency_key": "concurrent-15",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "REJECTED",
+        "reason": "Insufficient stock",
+        "created_at": "2026-10-24 11:13:59"
+      },
+      {
+        "id": "29e308c8-835a-4500-902b-e3d9bbe70102",
+        "idempotency_key": "concurrent-10",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "CONFIRMED",
+        "reason": null,
+        "created_at": "2026-10-24 11:13:59"
+      },
+      {
+        "id": "2cf3da0c-535f-4da5-918d-df537f9ab1c0",
+        "idempotency_key": "concurrent-0",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "CONFIRMED",
+        "reason": null,
+        "created_at": "2026-10-24 11:13:59"
+      },
+      {
+        "id": "3cd8b62d-c621-4114-b537-b5c9302be1e3",
+        "idempotency_key": "concurrent-3",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "CONFIRMED",
+        "reason": null,
+        "created_at": "2026-10-24 11:13:59"
+      },
+      {
+        "id": "65225fd4-e1b2-49b1-ad14-b2694c1bcf3a",
+        "idempotency_key": "concurrent-16",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "REJECTED",
+        "reason": "Insufficient stock",
+        "created_at": "2026-10-24 11:13:59"
+      },
+      {
+        "id": "68fcf4aa-08b5-46dd-a4bf-b29a65da1a5a",
+        "idempotency_key": "concurrent-14",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "REJECTED",
+        "reason": "Insufficient stock",
+        "created_at": "2026-10-24 11:13:59"
+      },
+      {
+        "id": "89e98f32-e941-40cd-9a77-5f7015a1f00e",
+        "idempotency_key": "concurrent-13",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "REJECTED",
+        "reason": "Insufficient stock",
+        "created_at": "2026-10-24 11:13:59"
+      },
+      {
+        "id": "8d92c5b0-3fa7-4e77-8176-e5a0b452ed84",
+        "idempotency_key": "concurrent-7",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "REJECTED",
+        "reason": "Insufficient stock",
+        "created_at": "2026-10-24 11:13:59"
+      },
+      {
+        "id": "8dd37f1c-e861-48d9-b6e7-618344e8d5ad",
+        "idempotency_key": "concurrent-19",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "REJECTED",
+        "reason": "Insufficient stock",
+        "created_at": "2026-10-24 11:13:59"
+      },
+      {
+        "id": "a31359ce-6e07-401e-a71f-486bb139d3d5",
+        "idempotency_key": "concurrent-17",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "REJECTED",
+        "reason": "Insufficient stock",
+        "created_at": "2026-10-24 11:13:59"
+      },
+      {
+        "id": "a8b73e69-7f01-486c-8ebf-125c9e3ae31d",
+        "idempotency_key": "concurrent-6",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "CONFIRMED",
+        "reason": null,
+        "created_at": "2026-10-24 11:13:59"
+      },
+      {
+        "id": "aa625aa1-f788-49fa-b491-a9019f863b79",
+        "idempotency_key": "concurrent-8",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "REJECTED",
+        "reason": "Insufficient stock",
+        "created_at": "2026-10-24 11:13:59"
+      },
+      {
+        "id": "aef45698-857c-43f3-a73d-86ff12249ae3",
+        "idempotency_key": "concurrent-4",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "REJECTED",
+        "reason": "Insufficient stock",
+        "created_at": "2026-10-24 11:13:59"
+      },
+      {
+        "id": "b3343f34-e4aa-4997-a9d0-16cd25e8e0c0",
+        "idempotency_key": "concurrent-5",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "CONFIRMED",
+        "reason": null,
+        "created_at": "2026-10-24 11:13:59"
+      },
+      {
+        "id": "bb8ae343-8047-44bf-954a-5ca79cfc4c29",
+        "idempotency_key": "demo-order-001",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 2,
+        "status": "CONFIRMED",
+        "reason": null,
+        "created_at": "2026-10-24 11:13:59"
+      },
+      {
+        "id": "c9101253-d42d-4d23-ad0d-6a0469d80951",
+        "idempotency_key": "demo-reject",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 100,
+        "status": "REJECTED",
+        "reason": "Insufficient stock",
+        "created_at": "2026-10-24 11:13:59"
+      },
+      {
+        "id": "ca91afe5-af98-44b4-9e56-52584d67c099",
+        "idempotency_key": "concurrent-18",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "REJECTED",
+        "reason": "Insufficient stock",
+        "created_at": "2026-10-24 11:13:59"
+      },
+      {
+        "id": "d1c3d109-4b1c-41df-b24c-53ce62b4b511",
+        "idempotency_key": "concurrent-9",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "CONFIRMED",
+        "reason": null,
+        "created_at": "2026-10-24 11:13:59"
+      },
+      {
+        "id": "dfbc6f5b-2a47-4617-9e8a-072092690e50",
+        "idempotency_key": "concurrent-1",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "CONFIRMED",
+        "reason": null,
+        "created_at": "2026-10-24 11:13:59"
+      },
+      {
+        "id": "f8792c42-a946-4617-aa91-de4afc1f9fad",
+        "idempotency_key": "concurrent-11",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "CONFIRMED",
+        "reason": null,
+        "created_at": "2026-10-24 11:13:59"
+      }
+    ]
+  },
+  {
+    "label": "Recovery with same key",
+    "method": "POST",
+    "url": "http://127.0.0.1:54472/orders",
+    "request": {
+      "customer": "Vattikunta Vishnu Priya",
+      "sku": "BOOK-002",
+      "quantity": 1
+    },
+    "status": 201,
+    "response": {
+      "id": "220aa330-ca65-4d1a-82c8-a6163464523d",
+      "idempotency_key": "outage-recovery",
+      "customer": "Vattikunta Vishnu Priya",
+      "sku": "BOOK-002",
+      "quantity": 1,
+      "status": "CONFIRMED",
+      "reason": null,
+      "created_at": "2026-10-24 11:13:59"
+    }
+  },
+  {
+    "label": "Stock persists after restart",
+    "method": "GET",
+    "url": "http://127.0.0.1:54471/books/BOOK-001",
+    "request": null,
+    "status": 200,
+    "response": {
+      "sku": "BOOK-001",
+      "title": "Designing Distributed Systems",
+      "available": 0
+    }
+  }
+]

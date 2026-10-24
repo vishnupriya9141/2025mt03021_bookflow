@@ -1,0 +1,18 @@
+$kind: http-request
+url: "{{inventory}}/reservations"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "order_id": "unauthorized",
+      "sku": "BOOK-001",
+      "quantity": 1
+    }
+scripts:
+  - type: afterResponse
+    code: pm.test("HTTP 401", () => pm.response.to.have.status(401));
+    language: text/javascript
+order: 9000

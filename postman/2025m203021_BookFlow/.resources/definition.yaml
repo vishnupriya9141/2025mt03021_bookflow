@@ -1,0 +1,7 @@
+$kind: collection
+description: ""
+variables:
+  inventory: http://127.0.0.1:8001
+  orders: http://127.0.0.1:8002
+  orderKey: ""
+  orderId: ""

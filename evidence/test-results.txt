@@ -1,0 +1,30 @@
+inventory-service
+test_concurrency_cannot_oversell (test_inventory.InventoryTests.test_concurrency_cannot_oversell) ... ok
+test_conflicting_replay (test_inventory.InventoryTests.test_conflicting_replay) ... ok
+test_quantity_validation (test_inventory.InventoryTests.test_quantity_validation) ... ok
+test_rejection_is_durable (test_inventory.InventoryTests.test_rejection_is_durable) ... ok
+test_replay_deducts_once (test_inventory.InventoryTests.test_replay_deducts_once) ... ok
+test_restart_does_not_reseed_stock (test_inventory.InventoryTests.test_restart_does_not_reseed_stock) ... ok
+test_unknown_sku (test_inventory.InventoryTests.test_unknown_sku) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.214s
+
+OK
+
+order-service
+test_auth_failure_does_not_reject_order (test_orders.OrderTests.test_auth_failure_does_not_reject_order) ... ok
+test_confirm_and_replay_without_second_call (test_orders.OrderTests.test_confirm_and_replay_without_second_call) ... ok
+test_empty_or_oversize_key (test_orders.OrderTests.test_empty_or_oversize_key) ... ok
+test_insufficient_stock_rejects (test_orders.OrderTests.test_insufficient_stock_rejects) ... ok
+test_key_cannot_change_payload (test_orders.OrderTests.test_key_cannot_change_payload) ... ok
+test_timeout_stays_pending_and_retry_uses_same_order_id (test_orders.OrderTests.test_timeout_stays_pending_and_retry_uses_same_order_id) ... ok
+test_unknown_book_rejects (test_orders.OrderTests.test_unknown_book_rejects) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.036s
+
+OK
+
+HTTP integration: PASS
+Verified: confirmation, queries, replay, conflict, rejection, validation, malformed JSON, authorization, 20 competing orders, outage, recovery, database persistence.

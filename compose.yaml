@@ -1,0 +1,24 @@
+services:
+  inventory:
+    build: ./inventory-service
+    image: bookflow-inventory:1.0
+    ports: ["127.0.0.1:8001:8000"]
+    environment:
+      SERVICE_TOKEN: ${SERVICE_TOKEN:?Set SERVICE_TOKEN first}
+    volumes: ["inventory-data:/data"]
+    restart: unless-stopped
+  orders:
+    build: ./order-service
+    image: bookflow-orders:1.0
+    ports: ["127.0.0.1:8002:8000"]
+    environment:
+      SERVICE_TOKEN: ${SERVICE_TOKEN:?Set SERVICE_TOKEN first}
+      INVENTORY_URL: http://inventory:8000
+    volumes: ["order-data:/data"]
+    depends_on:
+      inventory:
+        condition: service_healthy
+    restart: unless-stopped
+volumes:
+  inventory-data:
+  order-data:
