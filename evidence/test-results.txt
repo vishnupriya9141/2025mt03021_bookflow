@@ -8,7 +8,7 @@ test_restart_does_not_reseed_stock (test_inventory.InventoryTests.test_restart_d
 test_unknown_sku (test_inventory.InventoryTests.test_unknown_sku) ... ok
 
 ----------------------------------------------------------------------
-Ran 7 tests in 0.214s
+Ran 7 tests in 0.797s
 
 OK
 
@@ -22,7 +22,7 @@ test_timeout_stays_pending_and_retry_uses_same_order_id (test_orders.OrderTests.
 test_unknown_book_rejects (test_orders.OrderTests.test_unknown_book_rejects) ... ok
 
 ----------------------------------------------------------------------
-Ran 7 tests in 0.036s
+Ran 7 tests in 0.253s
 
 OK
 

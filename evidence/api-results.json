@@ -2,7 +2,7 @@
   {
     "label": "Initial inventory",
     "method": "GET",
-    "url": "http://127.0.0.1:54471/books",
+    "url": "http://127.0.0.1:56106/books",
     "request": null,
     "status": 200,
     "response": [
@@ -21,7 +21,7 @@
   {
     "label": "Create order",
     "method": "POST",
-    "url": "http://127.0.0.1:54472/orders",
+    "url": "http://127.0.0.1:56107/orders",
     "request": {
       "customer": "Vattikunta Vishnu Priya",
       "sku": "BOOK-001",
@@ -29,37 +29,37 @@
     },
     "status": 201,
     "response": {
-      "id": "bb8ae343-8047-44bf-954a-5ca79cfc4c29",
+      "id": "820380c6-6165-4da4-b38f-5cd0d32b4b3e",
       "idempotency_key": "demo-order-001",
       "customer": "Vattikunta Vishnu Priya",
       "sku": "BOOK-001",
       "quantity": 2,
       "status": "CONFIRMED",
       "reason": null,
-      "created_at": "2026-10-24 11:13:59"
+      "created_at": "2026-10-24 07:10:08"
     }
   },
   {
     "label": "Read order",
     "method": "GET",
-    "url": "http://127.0.0.1:54472/orders/bb8ae343-8047-44bf-954a-5ca79cfc4c29",
+    "url": "http://127.0.0.1:56107/orders/820380c6-6165-4da4-b38f-5cd0d32b4b3e",
     "request": null,
     "status": 200,
     "response": {
-      "id": "bb8ae343-8047-44bf-954a-5ca79cfc4c29",
+      "id": "820380c6-6165-4da4-b38f-5cd0d32b4b3e",
       "idempotency_key": "demo-order-001",
       "customer": "Vattikunta Vishnu Priya",
       "sku": "BOOK-001",
       "quantity": 2,
       "status": "CONFIRMED",
       "reason": null,
-      "created_at": "2026-10-24 11:13:59"
+      "created_at": "2026-10-24 07:10:08"
     }
   },
   {
     "label": "Safe retry",
     "method": "POST",
-    "url": "http://127.0.0.1:54472/orders",
+    "url": "http://127.0.0.1:56107/orders",
     "request": {
       "customer": "Vattikunta Vishnu Priya",
       "sku": "BOOK-001",
@@ -67,20 +67,20 @@
     },
     "status": 200,
     "response": {
-      "id": "bb8ae343-8047-44bf-954a-5ca79cfc4c29",
+      "id": "820380c6-6165-4da4-b38f-5cd0d32b4b3e",
       "idempotency_key": "demo-order-001",
       "customer": "Vattikunta Vishnu Priya",
       "sku": "BOOK-001",
       "quantity": 2,
       "status": "CONFIRMED",
       "reason": null,
-      "created_at": "2026-10-24 11:13:59"
+      "created_at": "2026-10-24 07:10:08"
     }
   },
   {
     "label": "Stock deducted once",
     "method": "GET",
-    "url": "http://127.0.0.1:54471/books/BOOK-001",
+    "url": "http://127.0.0.1:56106/books/BOOK-001",
     "request": null,
     "status": 200,
     "response": {
@@ -92,7 +92,7 @@
   {
     "label": "Key conflict",
     "method": "POST",
-    "url": "http://127.0.0.1:54472/orders",
+    "url": "http://127.0.0.1:56107/orders",
     "request": {
       "customer": "Vattikunta Vishnu Priya",
       "sku": "BOOK-001",
@@ -106,7 +106,7 @@
   {
     "label": "Insufficient stock",
     "method": "POST",
-    "url": "http://127.0.0.1:54472/orders",
+    "url": "http://127.0.0.1:56107/orders",
     "request": {
       "customer": "Vattikunta Vishnu Priya",
       "sku": "BOOK-001",
@@ -114,20 +114,20 @@
     },
     "status": 201,
     "response": {
-      "id": "c9101253-d42d-4d23-ad0d-6a0469d80951",
+      "id": "68955123-d58f-4a22-90f9-f532305afff6",
       "idempotency_key": "demo-reject",
       "customer": "Vattikunta Vishnu Priya",
       "sku": "BOOK-001",
       "quantity": 100,
       "status": "REJECTED",
       "reason": "Insufficient stock",
-      "created_at": "2026-10-24 11:13:59"
+      "created_at": "2026-10-24 07:10:08"
     }
   },
   {
     "label": "Invalid quantity",
     "method": "POST",
-    "url": "http://127.0.0.1:54472/orders",
+    "url": "http://127.0.0.1:56107/orders",
     "request": {
       "customer": "Vattikunta Vishnu Priya",
       "sku": "BOOK-001",
@@ -141,7 +141,7 @@
   {
     "label": "Missing idempotency key",
     "method": "POST",
-    "url": "http://127.0.0.1:54472/orders",
+    "url": "http://127.0.0.1:56107/orders",
     "request": {
       "customer": "Vattikunta Vishnu Priya",
       "sku": "BOOK-001",
@@ -155,7 +155,7 @@
   {
     "label": "Unauthorized reservation",
     "method": "POST",
-    "url": "http://127.0.0.1:54471/reservations",
+    "url": "http://127.0.0.1:56106/reservations",
     "request": {
       "order_id": "intruder",
       "sku": "BOOK-001",
@@ -169,7 +169,7 @@
   {
     "label": "Concurrency: zero stock, no overselling",
     "method": "GET",
-    "url": "http://127.0.0.1:54471/books/BOOK-001",
+    "url": "http://127.0.0.1:56106/books/BOOK-001",
     "request": null,
     "status": 200,
     "response": {
@@ -187,7 +187,7 @@
   {
     "label": "Dependency outage",
     "method": "POST",
-    "url": "http://127.0.0.1:54472/orders",
+    "url": "http://127.0.0.1:56107/orders",
     "request": {
       "customer": "Vattikunta Vishnu Priya",
       "sku": "BOOK-002",
@@ -201,246 +201,246 @@
   {
     "label": "Pending order remains durable",
     "method": "GET",
-    "url": "http://127.0.0.1:54472/orders",
+    "url": "http://127.0.0.1:56107/orders",
     "request": null,
     "status": 200,
     "response": [
       {
-        "id": "199b0d24-44c5-4d1f-9256-fd550fe48a06",
-        "idempotency_key": "concurrent-12",
-        "customer": "Vattikunta Vishnu Priya",
-        "sku": "BOOK-001",
-        "quantity": 1,
-        "status": "REJECTED",
-        "reason": "Insufficient stock",
-        "created_at": "2026-10-24 11:13:59"
-      },
-      {
-        "id": "220aa330-ca65-4d1a-82c8-a6163464523d",
-        "idempotency_key": "outage-recovery",
-        "customer": "Vattikunta Vishnu Priya",
-        "sku": "BOOK-002",
-        "quantity": 1,
-        "status": "PENDING",
-        "reason": null,
-        "created_at": "2026-10-24 11:13:59"
-      },
-      {
-        "id": "23064b8a-b432-47df-8914-f629a7f09328",
-        "idempotency_key": "concurrent-2",
-        "customer": "Vattikunta Vishnu Priya",
-        "sku": "BOOK-001",
-        "quantity": 1,
-        "status": "REJECTED",
-        "reason": "Insufficient stock",
-        "created_at": "2026-10-24 11:13:59"
-      },
-      {
-        "id": "2579eff3-dfe9-412c-afa3-6365efe47027",
-        "idempotency_key": "concurrent-15",
-        "customer": "Vattikunta Vishnu Priya",
-        "sku": "BOOK-001",
-        "quantity": 1,
-        "status": "REJECTED",
-        "reason": "Insufficient stock",
-        "created_at": "2026-10-24 11:13:59"
-      },
-      {
-        "id": "29e308c8-835a-4500-902b-e3d9bbe70102",
-        "idempotency_key": "concurrent-10",
-        "customer": "Vattikunta Vishnu Priya",
-        "sku": "BOOK-001",
-        "quantity": 1,
-        "status": "CONFIRMED",
-        "reason": null,
-        "created_at": "2026-10-24 11:13:59"
-      },
-      {
-        "id": "2cf3da0c-535f-4da5-918d-df537f9ab1c0",
-        "idempotency_key": "concurrent-0",
-        "customer": "Vattikunta Vishnu Priya",
-        "sku": "BOOK-001",
-        "quantity": 1,
-        "status": "CONFIRMED",
-        "reason": null,
-        "created_at": "2026-10-24 11:13:59"
-      },
-      {
-        "id": "3cd8b62d-c621-4114-b537-b5c9302be1e3",
+        "id": "00b989ed-b696-47f6-9302-d23af5706274",
         "idempotency_key": "concurrent-3",
         "customer": "Vattikunta Vishnu Priya",
         "sku": "BOOK-001",
         "quantity": 1,
+        "status": "REJECTED",
+        "reason": "Insufficient stock",
+        "created_at": "2026-10-24 07:10:08"
+      },
+      {
+        "id": "01f8974a-04bc-441c-826c-c421c4c30acd",
+        "idempotency_key": "concurrent-2",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
         "status": "CONFIRMED",
         "reason": null,
-        "created_at": "2026-10-24 11:13:59"
+        "created_at": "2026-10-24 07:10:08"
       },
       {
-        "id": "65225fd4-e1b2-49b1-ad14-b2694c1bcf3a",
-        "idempotency_key": "concurrent-16",
+        "id": "04a86d30-8823-417c-9a23-03a546712c5e",
+        "idempotency_key": "concurrent-12",
         "customer": "Vattikunta Vishnu Priya",
         "sku": "BOOK-001",
         "quantity": 1,
-        "status": "REJECTED",
-        "reason": "Insufficient stock",
-        "created_at": "2026-10-24 11:13:59"
+        "status": "CONFIRMED",
+        "reason": null,
+        "created_at": "2026-10-24 07:10:08"
       },
       {
-        "id": "68fcf4aa-08b5-46dd-a4bf-b29a65da1a5a",
-        "idempotency_key": "concurrent-14",
+        "id": "07f43efd-1232-4ef3-92a5-0b0240cb3c7b",
+        "idempotency_key": "concurrent-4",
         "customer": "Vattikunta Vishnu Priya",
         "sku": "BOOK-001",
         "quantity": 1,
-        "status": "REJECTED",
-        "reason": "Insufficient stock",
-        "created_at": "2026-10-24 11:13:59"
+        "status": "CONFIRMED",
+        "reason": null,
+        "created_at": "2026-10-24 07:10:08"
       },
       {
-        "id": "89e98f32-e941-40cd-9a77-5f7015a1f00e",
-        "idempotency_key": "concurrent-13",
-        "customer": "Vattikunta Vishnu Priya",
-        "sku": "BOOK-001",
-        "quantity": 1,
-        "status": "REJECTED",
-        "reason": "Insufficient stock",
-        "created_at": "2026-10-24 11:13:59"
-      },
-      {
-        "id": "8d92c5b0-3fa7-4e77-8176-e5a0b452ed84",
-        "idempotency_key": "concurrent-7",
-        "customer": "Vattikunta Vishnu Priya",
-        "sku": "BOOK-001",
-        "quantity": 1,
-        "status": "REJECTED",
-        "reason": "Insufficient stock",
-        "created_at": "2026-10-24 11:13:59"
-      },
-      {
-        "id": "8dd37f1c-e861-48d9-b6e7-618344e8d5ad",
+        "id": "0a69e606-984a-42dd-bd32-327dac7efb2b",
         "idempotency_key": "concurrent-19",
         "customer": "Vattikunta Vishnu Priya",
         "sku": "BOOK-001",
         "quantity": 1,
         "status": "REJECTED",
         "reason": "Insufficient stock",
-        "created_at": "2026-10-24 11:13:59"
+        "created_at": "2026-10-24 07:10:08"
       },
       {
-        "id": "a31359ce-6e07-401e-a71f-486bb139d3d5",
-        "idempotency_key": "concurrent-17",
-        "customer": "Vattikunta Vishnu Priya",
-        "sku": "BOOK-001",
-        "quantity": 1,
-        "status": "REJECTED",
-        "reason": "Insufficient stock",
-        "created_at": "2026-10-24 11:13:59"
-      },
-      {
-        "id": "a8b73e69-7f01-486c-8ebf-125c9e3ae31d",
-        "idempotency_key": "concurrent-6",
-        "customer": "Vattikunta Vishnu Priya",
-        "sku": "BOOK-001",
-        "quantity": 1,
-        "status": "CONFIRMED",
-        "reason": null,
-        "created_at": "2026-10-24 11:13:59"
-      },
-      {
-        "id": "aa625aa1-f788-49fa-b491-a9019f863b79",
-        "idempotency_key": "concurrent-8",
-        "customer": "Vattikunta Vishnu Priya",
-        "sku": "BOOK-001",
-        "quantity": 1,
-        "status": "REJECTED",
-        "reason": "Insufficient stock",
-        "created_at": "2026-10-24 11:13:59"
-      },
-      {
-        "id": "aef45698-857c-43f3-a73d-86ff12249ae3",
-        "idempotency_key": "concurrent-4",
-        "customer": "Vattikunta Vishnu Priya",
-        "sku": "BOOK-001",
-        "quantity": 1,
-        "status": "REJECTED",
-        "reason": "Insufficient stock",
-        "created_at": "2026-10-24 11:13:59"
-      },
-      {
-        "id": "b3343f34-e4aa-4997-a9d0-16cd25e8e0c0",
-        "idempotency_key": "concurrent-5",
-        "customer": "Vattikunta Vishnu Priya",
-        "sku": "BOOK-001",
-        "quantity": 1,
-        "status": "CONFIRMED",
-        "reason": null,
-        "created_at": "2026-10-24 11:13:59"
-      },
-      {
-        "id": "bb8ae343-8047-44bf-954a-5ca79cfc4c29",
-        "idempotency_key": "demo-order-001",
-        "customer": "Vattikunta Vishnu Priya",
-        "sku": "BOOK-001",
-        "quantity": 2,
-        "status": "CONFIRMED",
-        "reason": null,
-        "created_at": "2026-10-24 11:13:59"
-      },
-      {
-        "id": "c9101253-d42d-4d23-ad0d-6a0469d80951",
-        "idempotency_key": "demo-reject",
-        "customer": "Vattikunta Vishnu Priya",
-        "sku": "BOOK-001",
-        "quantity": 100,
-        "status": "REJECTED",
-        "reason": "Insufficient stock",
-        "created_at": "2026-10-24 11:13:59"
-      },
-      {
-        "id": "ca91afe5-af98-44b4-9e56-52584d67c099",
-        "idempotency_key": "concurrent-18",
-        "customer": "Vattikunta Vishnu Priya",
-        "sku": "BOOK-001",
-        "quantity": 1,
-        "status": "REJECTED",
-        "reason": "Insufficient stock",
-        "created_at": "2026-10-24 11:13:59"
-      },
-      {
-        "id": "d1c3d109-4b1c-41df-b24c-53ce62b4b511",
-        "idempotency_key": "concurrent-9",
-        "customer": "Vattikunta Vishnu Priya",
-        "sku": "BOOK-001",
-        "quantity": 1,
-        "status": "CONFIRMED",
-        "reason": null,
-        "created_at": "2026-10-24 11:13:59"
-      },
-      {
-        "id": "dfbc6f5b-2a47-4617-9e8a-072092690e50",
-        "idempotency_key": "concurrent-1",
-        "customer": "Vattikunta Vishnu Priya",
-        "sku": "BOOK-001",
-        "quantity": 1,
-        "status": "CONFIRMED",
-        "reason": null,
-        "created_at": "2026-10-24 11:13:59"
-      },
-      {
-        "id": "f8792c42-a946-4617-aa91-de4afc1f9fad",
+        "id": "15e2efb3-bc42-4b28-bfaf-6313d652f8e0",
         "idempotency_key": "concurrent-11",
         "customer": "Vattikunta Vishnu Priya",
         "sku": "BOOK-001",
         "quantity": 1,
         "status": "CONFIRMED",
         "reason": null,
-        "created_at": "2026-10-24 11:13:59"
+        "created_at": "2026-10-24 07:10:08"
+      },
+      {
+        "id": "35277489-8dc7-4c68-8b84-2721dadb7b80",
+        "idempotency_key": "concurrent-7",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "REJECTED",
+        "reason": "Insufficient stock",
+        "created_at": "2026-10-24 07:10:08"
+      },
+      {
+        "id": "3c80bc0b-c520-4805-86a8-be0987f29616",
+        "idempotency_key": "concurrent-5",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "REJECTED",
+        "reason": "Insufficient stock",
+        "created_at": "2026-10-24 07:10:08"
+      },
+      {
+        "id": "49003414-5325-4850-8fe7-ffcf8dcb9fa9",
+        "idempotency_key": "concurrent-8",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "CONFIRMED",
+        "reason": null,
+        "created_at": "2026-10-24 07:10:08"
+      },
+      {
+        "id": "63e49b02-5d96-4a73-90c9-5a9da8f8882e",
+        "idempotency_key": "concurrent-9",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "REJECTED",
+        "reason": "Insufficient stock",
+        "created_at": "2026-10-24 07:10:08"
+      },
+      {
+        "id": "68955123-d58f-4a22-90f9-f532305afff6",
+        "idempotency_key": "demo-reject",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 100,
+        "status": "REJECTED",
+        "reason": "Insufficient stock",
+        "created_at": "2026-10-24 07:10:08"
+      },
+      {
+        "id": "6a85e9f3-ae74-4ce9-9117-791f565a64a1",
+        "idempotency_key": "concurrent-13",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "REJECTED",
+        "reason": "Insufficient stock",
+        "created_at": "2026-10-24 07:10:08"
+      },
+      {
+        "id": "6e35671c-a368-444f-a735-2f7b36a1b7f5",
+        "idempotency_key": "concurrent-14",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "CONFIRMED",
+        "reason": null,
+        "created_at": "2026-10-24 07:10:08"
+      },
+      {
+        "id": "784fdc3f-d7b2-4622-975d-259d8feeac62",
+        "idempotency_key": "concurrent-10",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "REJECTED",
+        "reason": "Insufficient stock",
+        "created_at": "2026-10-24 07:10:08"
+      },
+      {
+        "id": "820380c6-6165-4da4-b38f-5cd0d32b4b3e",
+        "idempotency_key": "demo-order-001",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 2,
+        "status": "CONFIRMED",
+        "reason": null,
+        "created_at": "2026-10-24 07:10:08"
+      },
+      {
+        "id": "868dc758-fbd4-483e-b552-d096224b0367",
+        "idempotency_key": "concurrent-17",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "REJECTED",
+        "reason": "Insufficient stock",
+        "created_at": "2026-10-24 07:10:08"
+      },
+      {
+        "id": "8a368eea-db9a-40a6-9c27-eaa4f063b06f",
+        "idempotency_key": "concurrent-16",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "REJECTED",
+        "reason": "Insufficient stock",
+        "created_at": "2026-10-24 07:10:08"
+      },
+      {
+        "id": "91a53c46-2df3-44f4-a22c-37bebea3ebbd",
+        "idempotency_key": "concurrent-0",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "CONFIRMED",
+        "reason": null,
+        "created_at": "2026-10-24 07:10:08"
+      },
+      {
+        "id": "9ae18642-24fa-4bbc-ae47-4707a2aa348c",
+        "idempotency_key": "outage-recovery",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-002",
+        "quantity": 1,
+        "status": "PENDING",
+        "reason": null,
+        "created_at": "2026-10-24 07:10:08"
+      },
+      {
+        "id": "ad8cd9bb-c4ca-4616-9bf3-7180e7103bea",
+        "idempotency_key": "concurrent-18",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "REJECTED",
+        "reason": "Insufficient stock",
+        "created_at": "2026-10-24 07:10:08"
+      },
+      {
+        "id": "e5be775a-2265-4adc-a6bc-49664a495201",
+        "idempotency_key": "concurrent-1",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "CONFIRMED",
+        "reason": null,
+        "created_at": "2026-10-24 07:10:08"
+      },
+      {
+        "id": "e65d6589-3db6-47b8-a9c0-d9eb8cc63bc9",
+        "idempotency_key": "concurrent-6",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "REJECTED",
+        "reason": "Insufficient stock",
+        "created_at": "2026-10-24 07:10:08"
+      },
+      {
+        "id": "fa68ffdf-a6c3-4307-a2a3-21707a88b6d4",
+        "idempotency_key": "concurrent-15",
+        "customer": "Vattikunta Vishnu Priya",
+        "sku": "BOOK-001",
+        "quantity": 1,
+        "status": "REJECTED",
+        "reason": "Insufficient stock",
+        "created_at": "2026-10-24 07:10:08"
       }
     ]
   },
   {
     "label": "Recovery with same key",
     "method": "POST",
-    "url": "http://127.0.0.1:54472/orders",
+    "url": "http://127.0.0.1:56107/orders",
     "request": {
       "customer": "Vattikunta Vishnu Priya",
       "sku": "BOOK-002",
@@ -448,20 +448,20 @@
     },
     "status": 201,
     "response": {
-      "id": "220aa330-ca65-4d1a-82c8-a6163464523d",
+      "id": "9ae18642-24fa-4bbc-ae47-4707a2aa348c",
       "idempotency_key": "outage-recovery",
       "customer": "Vattikunta Vishnu Priya",
       "sku": "BOOK-002",
       "quantity": 1,
       "status": "CONFIRMED",
       "reason": null,
-      "created_at": "2026-10-24 11:13:59"
+      "created_at": "2026-10-24 07:10:08"
     }
   },
   {
     "label": "Stock persists after restart",
     "method": "GET",
-    "url": "http://127.0.0.1:54471/books/BOOK-001",
+    "url": "http://127.0.0.1:56106/books/BOOK-001",
     "request": null,
     "status": 200,
     "response": {
